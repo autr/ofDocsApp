@@ -18,7 +18,7 @@ module.exports = {
 		},
 		openFrameworks: {
 			dir: '../libs/openFrameworks/',
-			pattern: '*/*.{h,cpp}'
+			pattern: '*/*.{h,cpp,mm,inl}'
 		},
 		guides: {
 			dir: '../ofSite/content/setup/',
@@ -26,11 +26,11 @@ module.exports = {
 		},
 		examples: {
 			dir: '../examples/',
-			pattern: '*/*/{src/*.{h,cpp,mm},*.{md,png,jpg,gif}}'
+			pattern: '*/*/{src/*.{h,cpp,mm,inl},*.{md,png,jpg,gif}}'
 		},
 		addons: {
 			dir: '../addons/',
-			pattern: ofCoreAddons+'/{src/*.{cpp,h,mm},example*/src/*.{cpp,h,mm},**.{png,jpg,md,markdown,gif}}'
+			pattern: ofCoreAddons+'/{src/*.{cpp,h,mm,inl},example*/src/*.{cpp,h,mm,inl},**.{png,jpg,md,markdown,gif}}'
 		},
 		files: {
 			dir: '../ofSite/files/',
@@ -47,7 +47,7 @@ module.exports = {
 	filters: ['jpg', 'png', 'gif', 'svg', 'search_results', 'introduction', 'readme', 'index', '.ja', '.ko', '.zh_cn', '-ja', '-ko', '-zh_cn' ],
 	exts: {
 		page: ['md','markdown','html'],
-		source: ['cpp','h','mm'],
+		source: ['cpp','h','mm','inl'],
 		asset: ['png','svg','jpg','jpeg','gif']
 	},
 	icons: {
