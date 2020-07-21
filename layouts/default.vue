@@ -51,11 +51,14 @@
 							v-if="search.value.length > 0"
 							@click="search.value = ''; searchResults = []"
 						)
-				#results.mt1( ref="searchResults" v-if="resultsOrRecent.length > 0"  )
+				#results.mt1( ref="searchResults" v-if="showSearch"  )
 					.inner
 						h4
-							span.ptb1.block( v-show="searchResults.length > 0") Search results:
-							span.ptb1.block( v-show="showRecent && searchResults.length == 0") Recently viewed:
+							span.ptb1.block( v-show="!showRecent") Search results:
+							span.ptb1.block( v-show="showRecent") Recently viewed:
+					.no-results( v-if="searchResults.length == 0 && !showRecent"): .inner 
+						span( v-if="search.value.length < minCharLength" ) Enter more text...
+						span( v-if="search.value.length >= minCharLength" ) No Results.
 					.search-result(
 						v-for=" s, i in resultsOrRecent"
 						v-if=" s "
@@ -68,8 +71,8 @@
 								breadcrumbs( :entry="s" :last="false" :first="false" :links="false")
 					.inner.ptb2
 						.cdark.courier(v-if="resultsOrRecent.length === maxResults") 
-							span Search limit reached: <= {{maxResults}}
-			#lists.menu-inner.mt1.mb2( v-show="resultsOrRecent.length === 0" ): .inner
+							span Limit reached: <= {{maxResults}}
+			#lists.menu-inner.mt1.mb2( v-show="!showSearch" ): .inner
 				list( 
 					v-for="n, i in storeNavigation"
 					:key="i"
@@ -147,12 +150,14 @@ export default {
 				darkMode: false,
 
 				maxResults: 30,
+				minCharLength: 4,
 
 				searchShortcut: [],
 				clearShortcut: ['Meta','Shift','C'],
 
 				newShortcut: false,
 				showRecent: false,
+				showSearch: false,
 				keys: {},
 
 
@@ -185,36 +190,47 @@ export default {
 			}
 	},
 	methods: {
-    origin(a) {
-    	try {
-	      if (a.breadcrumbs.length <= 0) return "ofDocs";
-	      return this.data[ a.breadcrumbs.slice(-1)[0] ].name;
-			} catch(err) {
-				console.log('[default.vue] origin');
-			}
-    },
+	    origin(a) {
+	    	try {
+		      if (a.breadcrumbs.length <= 0) return "ofDocs";
+		      return this.data[ a.breadcrumbs.slice(-1)[0] ].name;
+				} catch(err) {
+					console.log('[default.vue] origin');
+				}
+	    },
 		randomHue( a = 360 ) {
 			return Math.round( Math.random() * a )
 		},
+		setShowRecent() {
+			const v = this.search.value;
+			this.showRecent = (v === "");
+			console.log('SHOW RECENT?', this.search.value, v, this.showRecent);
+		},
 		searchChange() {
+
+			this.setShowRecent();
 
 			// --> searchChange
 
 			try {
 
+				console.log('[default.vue] searching...');
 				const filters = this.$store.state.filters;
 				let out = [];
 
 				// too few chars...
 
-				if (this.search.value.length < 4) {
+				if (this.search.value.length < this.minCharLength) {
 					this.searchResults = [];
+					console.log('[default.vue] return: not enough chars');
 					return;
 				}
 
 				// split string...
 
 				const components = this.search.value.split(' ');
+
+				console.log('[default.vue] using array:', JSON.stringify(components) );
 
 
 				// search data...
@@ -252,12 +268,11 @@ export default {
 
 
 							const word = components[i].toLowerCase();
-							const idx = path.indexOf( word )
+							const idx = path.toLowerCase().indexOf( word )
+							const hasPrimary = name.toLowerCase().indexOf( word ) !== -1;
 							const hasSecondary = idx !== -1;
-							const hasPrimary = name.indexOf( word ) !== -1;
 
 							if ( hasPrimary ) {
-								console.log( name );
 								foundPrimary += 1;
 							}
 							if ( hasSecondary ) {
@@ -289,6 +304,8 @@ export default {
 				const max = this.maxResults;
 				const end = ( out.length > max ) ? max : out.length;
 				out = out.slice( 0, end );
+
+				console.log(`[default.vue] found ${out.length} results...`);
 				this.searchIdx = -1;
 				this.searchResults = out;
 			} catch(err) {
@@ -485,14 +502,14 @@ export default {
 		document.addEventListener('keyup', this.onKeyUp);
 
 		const input = this.$refs.search.$el.querySelector('input');
-		input.addEventListener('focus', () => {
-			// console.log('FOCUS');
-			this.showRecent = true;
+		input.addEventListener('focus', (e) => {
+			this.setShowRecent();
+			this.showSearch = true;
 		});
 		input.addEventListener('blur', () => {
-			// console.log('BLUR');
 			setTimeout( () => {
 				this.showRecent = false;
+				this.showSearch = false;
 			}, 100);
 		});
 
@@ -504,7 +521,6 @@ export default {
 
 		const cs = this.$cookies.get("OFDOCS_SHORTCUT");
 		this.searchShortcut = (cs) ? cs : ["Alt", "F"];
-		console.log( this.searchShortcut );
 		this.search.placeholder = "Search (" + this.shortcutString + ")";
 
 		// navigation...

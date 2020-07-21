@@ -3,10 +3,6 @@ const allAddons = '*';
 
 module.exports = {
 
-  test: (args, e) => {
-    console.log('>>>>>>>>>>>>>>>>>>>>>>>>');
-    console.log(args,e);
-  },
 	meta: {
 		baseTitle: 'ofDocs',
 		baseDesc: 'openFrameworks documentation and examples browser'
