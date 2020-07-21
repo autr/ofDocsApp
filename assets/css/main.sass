@@ -1,0 +1,86 @@
+
+@import '~/assets/css/_reset'
+@import '~/assets/css/_utils'
+@import '~/assets/css/_grid'
+@import url('https://fonts.googleapis.com/css?family=Questrial&display=swap')
+@import 'burgers'
+@import './styles'
+
+// dark mode options...
+
+// $invert: false
+$pushInvertedBrightness: 0.005 // none = 0
+
+// color functions...
+
+@function mono($l)
+  @return hsl(0,0%,$l)
+  
+// theme...
+
+$fontSize: 13px
+$maxWidth: 1400px
+$minWidth: 420px
+$pagePadding: 30px
+$colPadding: 30px
+
+
+@function getMono($l, $invert)
+  $hue: 0
+  $sat: 0
+  @if $invert
+    @return hsl( $hue, $sat, 100 - ($l * ( 1 - ( (100-$l) *  $pushInvertedBrightness ) ) ) )
+  @else
+    @return hsl( $hue, $sat, $l )
+
+
+@mixin generateHeaders($fontSize, $ratio: 1.61803398875)
+  $fontRatios: 0.785714, 1, 1.2857, 1.64285, 2.071428, 2.642857
+  font-size: $fontSize
+  line-height: $fontSize * $ratio
+  @for $i from 1 through length( $fontRatios )
+    h#{$i}
+      $fSize: $fontSize * nth( $fontRatios, $i )
+      font-size: $fSize
+      line-height: $fSize * 1.61803398875
+
+@mixin themeVersions( $darkLightMode )
+
+
+  $color: #EE3987
+  $darkest: getMono(10, $darkLightMode)
+  $dark: getMono(30, $darkLightMode)
+  $midGray: getMono(60, $darkLightMode)
+  $midGray2: getMono(70, $darkLightMode)
+  $midGray3: getMono(80, $darkLightMode)
+  $light: getMono(90, $darkLightMode)
+  $lightest: getMono(96, $darkLightMode)
+  $white: getMono( 100, $darkLightMode )
+
+  body
+    @include generateFontSizes( 13px )
+    @include generateTags( gray, $darkest, $darkest )
+    width: 100vw
+    padding: 0
+    margin: 0
+    overflow-x: hidden
+    color: $dark
+    background: $white
+    -moz-osx-font-smoothing: subpixel-antialiased
+    -webkit-font-smoothing: subpixel-antialiased
+    -webkit-font-smooth: subpixel-antialiased
+    -moz-font-smooth: subpixel-antialiased
+    #app .markdown
+      generateHeaders(14px)
+
+  @include entireStylesheet( $color, $darkest, $dark, $midGray, $midGray2, $midGray3, $light, $lightest, $white )
+
+
+html
+  @include themeVersions( false )
+html.dark-mode
+  @include themeVersions( true )
+// @media (prefers-color-scheme: dark)
+//   html
+//     @include themeVersions( true )
+
