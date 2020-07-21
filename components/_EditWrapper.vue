@@ -5,11 +5,11 @@
         span.f7 
           i.ico.f5(v-if="page.entry.icon") {{page.entry.icon}}
           span(v-html="page.entry.name")
-        span.f3(v-if="langs") 
-          span.ml1(
-            v-for="l, k in langs"
-          )
-            nuxt-link.pink( :to="l.path" ) {{k}}
+      .langs.mr1(v-if="langs") 
+        span(
+          v-for="l, k in langs"
+        )
+          nuxt-link.button.color-outline.pink( :to="l.path" ) {{k}}
       .actions( v-if="canEdit && !page.static" )
         button.button(
           @click="toggleEdit"
@@ -38,7 +38,6 @@
     .rendered( v-show="!editMode" )
       doc-page(  v-if="page.type === 'page'" v-bind="page" )
       list-page( v-else-if="page.type === 'folder'" v-bind="page" :showDoc="true" )
-      //- slot( name="actions" )
     textarea.markdown-editor(  
       v-show="editMode"
       ref="editor" 

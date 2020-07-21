@@ -37,7 +37,8 @@ export default {
     },
     tweakedPage() {
       this.page.entry.children = [];
-      Object.keys( this.structure ).forEach( k => {
+      this.$store.state.navigation.forEach( n => {
+        const k = n[0];
         this.page.entry.children.push( this.structure[k].id );
       });
       return this.page;

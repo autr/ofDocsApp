@@ -75,12 +75,12 @@
       outline: none
       padding: 2em 0em
       margin: 4em 0em
-    .page-title, .actions
+    .page-title, .actions, .langs
       display: inline-block
-    .actions
+    .actions, .langs
       position: relative
       top: -0.4em
-      left: 1em
+      left: 0.5em
 
   #app
     .pink
@@ -227,7 +227,8 @@
       font-size: $fontSize
       cursor: pointer
       color: $darkest
-      border: 1px solid $light
+      border: 1.2px solid darken($light,5)
+      background: lighten($light,10)
       &:disabled
         opacity: 0.5
       &.dark
@@ -238,6 +239,14 @@
         background: $color
         border-color: $color
         color: $white
+      &.color-outline
+        background: transparent
+        border-color: $color
+        color: $color
+        &:hover
+          color: $dark
+          border-color: $dark
+
 
     $logoSize: 60px
     $footerHeight: 200px
@@ -557,6 +566,17 @@
     padding: 0px 20px
   #app
 
+    .breadcrumbs
+      font-family: Courier, serif
+      display: block
+      position: relative
+      a, a:hover, *
+        font-weight: normal!important
+        color: $midGray
+        font-size: $fontSize
+    .crumb
+      .chevron.bottom
+        margin-left: 1em!important
     .version
       font-family: Courier, serif;
       color: $midGray3
@@ -588,26 +608,6 @@
               font-weight: bold
         .name
           color: $darkest
-        .breadcrumbs
-          font-family: Courier, serif
-          display: block
-          position: relative
-          &:before
-            content: ""
-            @include fill()
-          a, a:hover, *
-            font-weight: normal!important
-            color: $midGray
-            font-size: $fontSize
-          .crumb
-            .chevron
-              margin: 0px
-              margin-right: 5px
-              left: 0px
-              top: 1px
-              position: relative
-              &:before
-                transform: rotate(45deg) scale(0.75)
       .field-inner
         position: relative
         .x

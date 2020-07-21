@@ -40,9 +40,9 @@ module.exports = {
 	navigation: [ 
 		['documentation', 4], 
 		['examples', 3], 
+		['guides', 2],
 		['openFrameworks', 3], 
-		['addons', 3], 
-		['guides', 2]
+		['addons', 3]
 	],
 	filters: ['jpg', 'png', 'gif', 'svg', 'search_results', 'introduction', 'readme', 'index', '.ja', '.ko', '.zh_cn', '-ja', '-ko', '-zh_cn' ],
 	exts: {

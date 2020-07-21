@@ -10,7 +10,7 @@
 				:key="i"
 			)
 				.ncol-left
-					nuxt-link.pink.ptb1( :to="e.path" v-html="e.name" )
+					nuxt-link.color-outline.button.mb1( :to="e.path" v-html="e.name" )
 				.ncol-columns.mb1( v-if="e.children" )
 					.flow( :class="{ 'no-cols': (filtered( e.children, filters ).length <= 4) }" )
 						nuxt-link(

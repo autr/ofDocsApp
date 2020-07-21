@@ -237,7 +237,7 @@ module.exports = ( rawUrl, method ) => {
 
             // console.log('✨ [apiUtils.js] processing:', url);
 
-            if (url.substring(0, 2) === '/_' || url === '/sw.js' || url ==='/favicon.ico' || url.indexOf('/service-worker.js') !== -1) {
+            if (url.substring(0, 2) === '/_' || url === '/sw.js' || url ==='/favicon.ico' || url.indexOf('service-worker.js') !== -1 || url.indexOf('_nuxt') !== -1) {
                 console.log(`💺 [api.js] system: ${url}`);
                 resolve( { status: 600  }); 
                 return;
