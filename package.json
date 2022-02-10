@@ -42,7 +42,7 @@
     "@nuxtjs/youch": "^4.2.3",
     "glob": "^7.1.6",
     "global": "^4.4.0",
-    "node-sass": "^4.13.0",
+    "node-sass": "^7.0.0",
     "nuxt": "^2.11.0",
     "nuxt-validate": "^1.0.1",
     "pkg": "^4.4.4",
